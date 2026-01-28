@@ -393,6 +393,62 @@ farmTab:Toggle({
     end
 })
 
+farmTab:Toggle({
+    Title = "Anti-AFK",
+    Callback = function(state)
+        if state then
+            local VirtualUser = game:GetService("VirtualUser")
+
+            _G.afkGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+            _G.afkGui.Name = "AntiAFKGui"
+            _G.afkGui.ResetOnSpawn = false
+
+            local timer = Instance.new("TextLabel", _G.afkGui)
+            timer.Size = UDim2.new(0, 200, 0, 30)
+            timer.Position = UDim2.new(1, -210, 0, -20)
+            timer.Text = "0:00:00"
+            timer.TextColor3 = Color3.fromRGB(255, 255, 255)
+            timer.Font = Enum.Font.GothamBold
+            timer.TextSize = 25
+            timer.BackgroundTransparency = 1
+            timer.TextTransparency = 0
+            
+            -- Outline untuk timer
+local timerStroke = Instance.new("UIStroke", timer)
+timerStroke.Thickness = 1
+timerStroke.Color = Color3.fromRGB(39, 39, 39)
+
+            local startTime = tick()
+
+            task.spawn(function()
+                while _G.afkGui and _G.afkGui.Parent do
+                    local elapsed = tick() - startTime
+                    local h = math.floor(elapsed / 3600)
+                    local m = math.floor((elapsed % 3600) / 60)
+                    local s = math.floor(elapsed % 60)
+                    timer.Text = string.format("%02d:%02d:%02d", h, m, s)
+                    task.wait(1)
+                end
+            end)
+            
+            _G.afkConnection = player.Idled:Connect(function()
+                VirtualUser:Button2Down(Vector2.new(), workspace.CurrentCamera.CFrame)
+                task.wait(1)
+                VirtualUser:Button2Up(Vector2.new(), workspace.CurrentCamera.CFrame)
+            end)
+        else
+            if _G.afkConnection then
+                _G.afkConnection:Disconnect()
+                _G.afkConnection = nil
+            end
+            if _G.afkGui then
+                _G.afkGui:Destroy()
+                _G.afkGui = nil
+            end
+        end
+    end
+})
+
 farmTab:Section({Title = "Ghost Rock", Icon = "ghost"})
 for _, r in ipairs(rockData) do
     farmTab:Toggle({Title = "Ghost " .. r[1], Callback = function(v)
