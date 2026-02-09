@@ -173,7 +173,7 @@ local rockCategories = {
     }
 }
 
-local emoteList = {["Fly Zor"] = 106493972274585, ["Mager Buat Emote🗿"] = 339082039}
+local emoteList={["God V1"]=106493972274585,["Fly Mode"]=106493972274585,["Style Arena"]=126681258672147,["BlockyKick Dance"]=97629500912487,["God V2"]=81359407734079,["Style Human"]=117648669357990,["Boxing"]=115203580644128}
 local blockedAnimations = {["rbxassetid://3638729053"] = true, ["rbxassetid://3638767427"] = true}
 
 -- [[ CORE FUNCTIONS ]] --
@@ -283,7 +283,7 @@ farmTab:Dropdown({
 farmTab:Dropdown({
     Title = "Select Rock Emote",
     Desc = "Special For Rock Emote",
-    Values = {"Fly Zor", "Mager Buat Emote🗿"},
+    Values = {"God V1","Fly Mode","Style Arena","BlockyKick Dance","God V2","Style Human","Boxing"},
     Callback = function(v) selectedEmoteName = v end
 })
 
